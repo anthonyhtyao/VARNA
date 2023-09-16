@@ -132,6 +132,8 @@ public class VARNAConfigLoader {
 
 	public static String highlightRegionOpt = "highlightRegion";
 
+	public static String keepAuxBPsOpt = "keepAuxBPs";
+
 	public static String nonStandardColorOpt = "nsBasesColor";
 	public static String numColumnsOpt = "rows";
 	public static String numRowsOpt = "columns";
@@ -249,6 +251,8 @@ public class VARNAConfigLoader {
 	private boolean _useBaseNumbersColor;
 	private boolean _useBaseOutlineColor;
 
+	private boolean _keepAuxBPs;
+
 	private String _URL;
 
 	protected ArrayList<VARNAPanel> _VARNAPanelList = new ArrayList<VARNAPanel>();
@@ -352,6 +356,7 @@ public class VARNAConfigLoader {
 		_flip = "";
 		_orientation = "";
 		_spaceBetweenBases = VARNAConfig.DEFAULT_SPACE_BETWEEN_BASES;
+		_keepAuxBPs = false;
 	}
 
 	public static Color getSafeColor(String col, Color def) {
@@ -470,6 +475,7 @@ public class VARNAConfigLoader {
 				{ gapsBaseColorOpt, "Color",
 						"Define and use custom color for gaps bases in comparison mode" },
 				{ highlightRegionOpt, "string", "Highlight a set of contiguous regions" },
+				{ keepAuxBPsOpt, "boolean", "Treat auxBPs as non-canonical BPs" },
 				{ modifiableOpt, "boolean", "Allows/prohibits modifications" },
 				{ nonStandardColorOpt, "Color",
 						"Define and use custom color for non-standard bases in comparison mode" },
@@ -803,6 +809,8 @@ public class VARNAConfigLoader {
 							_optionProducer.getParameterValue(
 									titleColorOpt + n, _titleColor.toString()),
 							_titleColor);
+					_keepAuxBPs= Boolean.parseBoolean(_optionProducer
+							.getParameterValue(keepAuxBPsOpt + n, "false"));
 
 					
 					
@@ -1294,6 +1302,8 @@ public class VARNAConfigLoader {
 								String style = data[1];
 								msbp.assignParameters(style);
 							}
+							if (_keepAuxBPs)
+								msbp.keep();
 							vp.getRNA()
 									.addBPToStructureUsingNumbers(a, b, msbp);
 						}

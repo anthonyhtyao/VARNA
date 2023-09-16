@@ -3201,6 +3201,7 @@ public class RNA extends InterfaceVARNAObservable implements Serializable {
 				msbp);
 	}
 
+
 	public void addBP(int index5, int index3) {
 		int i = index5;
 		int j = index3;
@@ -3220,6 +3221,10 @@ public class RNA extends InterfaceVARNAObservable implements Serializable {
 			i = k;
 		}
 		if (i != -1) {
+			if (msbp.isKept()) {
+				addBPAux(i, j, msbp);
+				return;
+			}
 			for (int k = i; k <= j; k++) {
 				ModeleBase tmp = _listeBases.get(k);
 				int l = tmp.getElementStructure();

@@ -52,6 +52,7 @@ public class ModeleBP implements Serializable, Comparable<ModeleBP> {
 	private Edge _edge3;
 	private Stericity _stericity;
 	private ModeleBPStyle _style;
+	private boolean _keep;
 
 	
 	public static String XML_ELEMENT_NAME = "bp";
@@ -97,6 +98,7 @@ public class ModeleBP implements Serializable, Comparable<ModeleBP> {
 		_edge3 = edge3;
 		_stericity = ster;
 		_style = new ModeleBPStyle();
+		_keep = false;
 	}
 
 	public ModeleBP(String text) throws ExceptionModeleStyleBaseSyntaxError, ExceptionParameterError {
@@ -223,12 +225,23 @@ public class ModeleBP implements Serializable, Comparable<ModeleBP> {
 	}
 
 
+	// Set keep to True, i.e., basepair is kept in aux
+	public void keep() {
+		_keep = true;
+	}
+
+	public boolean isKept() {
+		return _keep;
+	}
+
+
 
 	public static final String PARAM_COLOR = "color";
 	public static final String PARAM_THICKNESS = "thickness";
 	public static final String PARAM_EDGE5 = "edge5";
 	public static final String PARAM_EDGE3 = "edge3";
 	public static final String PARAM_STERICITY = "stericity";
+	public static final String PARAM_KEEP = "keep";
 
 	public static final String VALUE_WATSON_CRICK = "wc";
 	public static final String VALUE_HOOGSTEEN = "h";
@@ -302,6 +315,10 @@ public class ModeleBP implements Serializable, Comparable<ModeleBP> {
 				} else
 					throw new ExceptionParameterError(
 							"Bad value for stericity:" + valuesArray.get(i));
+			} else if (namesArray.get(i).toLowerCase().equals(PARAM_KEEP)) {
+				String s = valuesArray.get(i).toLowerCase();
+				if (Boolean.parseBoolean(s))
+					keep();
 			} else
 				throw new ExceptionModeleStyleBaseSyntaxError(
 						"Unknown parameter:" + namesArray.get(i));
